@@ -1,20 +1,19 @@
 //
-//  PlayersViewController.swift
+//  PlayerDetailsViewController.swift
 //  Ratings
 //
-//  Created by Admin on 3/10/17.
+//  Created by Admin on 3/13/17.
 //  Copyright © 2017 Admin. All rights reserved.
 //
 
 import UIKit
 
-var players:[Player] = playersData
+class PlayerDetailsViewController: UITableViewController {
 
-class PlayersViewController: UITableViewController {
-
+    var player: Player?
     
-    
-    
+    @IBOutlet weak var nameTextField: UITextField!
+    @IBOutlet weak var detailLabel: UILabel!
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -32,55 +31,35 @@ class PlayersViewController: UITableViewController {
 
     // MARK: - Table view data source
 
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 1
-    }
+//    override func numberOfSections(in tableView: UITableView) -> Int {
+//        // #warning Incomplete implementation, return the number of sections
+//        return 0
+//    }
+//
+//    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+//        // #warning Incomplete implementation, return the number of rows
+//        return 0
+//    }
+    
+    
+    
 
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return players.count
-    }
 
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if indexPath.section == 0 {
+            nameTextField.becomeFirstResponder()
+        }
+    }
+    /*
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "PlayerCell", for: indexPath) as! PlayerCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
 
-        let player = players[indexPath.row] as Player
-        cell.player = player
-//        cell.textLabel?.text = player.name
-//        cell.detailTextLabel?.text = player.game
-//        if let nameLabel = cell.viewWithTag(100) as? UILabel{
-//            nameLabel.text = player.name
-//        }
-//        if let gameLabel = cell.viewWithTag(101) as? UILabel{
-//            gameLabel.text = player.game
-//        }
-//        if let ratingImageView = cell.viewWithTag(102) as? UIImageView{
-//            ratingImageView.image = self.imageForRating(rating: player.rating)
-//        }
+        // Configure the cell...
 
         return cell
     }
-    
+    */
 
-    @IBAction func cancelToPlayersViewController(for segue:UIStoryboardSegue) {
-    }
-    
-    @IBAction func savePlayerDetail(for segue:UIStoryboardSegue) {
-        if let PlayerDetailsViewController = segue.source as? PlayerDetailsViewController {
-            if let player = PlayerDetailsViewController.player {
-                players.append(player)
-                
-                let indexPath = IndexPath(row: players.count-1, section: 0)
-                
-                tableView.insertRows(at: [indexPath], with: .automatic)
-                
-                
-            }
-        }
-    }
-    
-    
     /*
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -116,14 +95,26 @@ class PlayersViewController: UITableViewController {
     }
     */
 
-    /*
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
+        
+        if segue.identifier == "SavePlayerDetail" {
+            player = Player(name: nameTextField.text!, game: "Chess", rating: 1)
+        }
     }
-    */
+    
+    required init?(coder aDecoder: NSCoder) {
+        print("init PlayerDetaisViewController")
+        super.init(coder: aDecoder)
+    }
+    
+    deinit {
+        print("deinit PlayerDetailsViewController")
+    }
+    
 
 }

@@ -1,19 +1,31 @@
 //
-//  PlayersViewController.swift
+//  GamePickerViewController.swift
 //  Ratings
 //
-//  Created by Admin on 3/10/17.
+//  Created by Admin on 3/13/17.
 //  Copyright © 2017 Admin. All rights reserved.
 //
 
 import UIKit
 
-var players:[Player] = playersData
-
-class PlayersViewController: UITableViewController {
-
+class GamePickerViewController: UITableViewController {
     
+    var games:[String] = [
+        "Angry Birds",
+        "Chess",
+        "Russian Roulette",
+        "Spin the Bottle",
+        "Texas Hold'em Poker",
+        "Tic-Tac-Toe"]
     
+    var selectedGame:String? {
+        didSet {
+            if let game = selectedGame {
+                selectedGameIndex = games.index(of: game)!
+            }
+        }
+    }
+    var selectedGameIndex:Int?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,47 +51,38 @@ class PlayersViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return players.count
+        return games.count
     }
 
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "PlayerCell", for: indexPath) as! PlayerCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "GameCell", for: indexPath)
 
-        let player = players[indexPath.row] as Player
-        cell.player = player
-//        cell.textLabel?.text = player.name
-//        cell.detailTextLabel?.text = player.game
-//        if let nameLabel = cell.viewWithTag(100) as? UILabel{
-//            nameLabel.text = player.name
-//        }
-//        if let gameLabel = cell.viewWithTag(101) as? UILabel{
-//            gameLabel.text = player.game
-//        }
-//        if let ratingImageView = cell.viewWithTag(102) as? UIImageView{
-//            ratingImageView.image = self.imageForRating(rating: player.rating)
-//        }
+        cell.textLabel?.text = games[indexPath.row]
+        
+        if indexPath.row == selectedGameIndex {
+            cell.accessoryType = .checkmark
+        }
+        else {
+            cell.accessoryType = .none
+        }
 
         return cell
     }
     
-
-    @IBAction func cancelToPlayersViewController(for segue:UIStoryboardSegue) {
-    }
-    
-    @IBAction func savePlayerDetail(for segue:UIStoryboardSegue) {
-        if let PlayerDetailsViewController = segue.source as? PlayerDetailsViewController {
-            if let player = PlayerDetailsViewController.player {
-                players.append(player)
-                
-                let indexPath = IndexPath(row: players.count-1, section: 0)
-                
-                tableView.insertRows(at: [indexPath], with: .automatic)
-                
-                
-            }
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        if let index = selectedGameIndex {
+            let cell = tableView.cellForRow(at: IndexPath(row: index, section: 0))
+            cell?.accessoryType = .none
         }
+        
+        selectedGame = games[indexPath.row]
+        
+        let cell = tableView.cellForRow(at: indexPath)
+        cell?.accessoryType = .checkmark
     }
-    
     
     /*
     // Override to support conditional editing of the table view.
