@@ -11,6 +11,11 @@ import UIKit
 class PlayerDetailsViewController: UITableViewController {
 
     var player: Player?
+    var game:String = "Chess" {
+        didSet {
+            detailLabel.text? = game
+        }
+    }
     
     @IBOutlet weak var nameTextField: UITextField!
     @IBOutlet weak var detailLabel: UILabel!
@@ -41,7 +46,12 @@ class PlayerDetailsViewController: UITableViewController {
 //        return 0
 //    }
     
-    
+    @IBAction func unwindWithSelectedGame(segue:UIStoryboardSegue) {
+        if let gamePickerViewController = segue.source as? GamePickerViewController,
+            let selectedGame = gamePickerViewController.selectedGame {
+            game = selectedGame
+        }
+    }
     
 
 
@@ -103,7 +113,7 @@ class PlayerDetailsViewController: UITableViewController {
         // Pass the selected object to the new view controller.
         
         if segue.identifier == "SavePlayerDetail" {
-            player = Player(name: nameTextField.text!, game: "Chess", rating: 1)
+            player = Player(name: nameTextField.text!, game: game, rating: 1)
         }
     }
     
